@@ -43,7 +43,7 @@ services:
       - TORRENTING_PORT=6881
     volumes:
       - /docker/qbittorrent:/config
-      - /media/<user>/HardDrive/downloads:/downloads
+      - /media/torrents/downloads:/downloads
     network_mode: service:gluetun
     healthcheck:
       test: ping -c 1 www.google.com || exit 1
@@ -58,7 +58,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Australia/Sydney
+      - TZ=Europe/Warsaw
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /docker/prowlarr:/config
@@ -72,12 +72,12 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Australia/Sydney
+      - TZ=Europe/Warsaw
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /docker/sonarr:/config
-      - /media/<user>/HardDrive/downloads:/downloads
-      - /media/<user>/HardDrive/tv:/TV
+      - /media/torrents/downloads:/downloads
+      - /media/torrents/tv:/TV
     network_mode: service:gluetun
 
   radarr:
@@ -87,28 +87,12 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Australia/Sydney
+      - TZ=Europe/Warsaw
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - /docker/radarr:/config
-      - /media/<user>/HardDrive/downloads:/downloads
-      - /media/<user>/HardDrive/movies:/Movies
-    network_mode: service:gluetun
-
-  lidarr:
-    container_name: lidarr
-    image: lscr.io/linuxserver/lidarr:latest
-    restart: unless-stopped
-    volumes:
-      - /etc/localtime:/etc/localtime:ro
-      - /docker/lidarr:/config
-      - /data:/data
-      - /media/<user>/HardDrive/downloads:/downloads
-      - /media/<user>/HardDrive/music:/Music
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Australia/Sydney
+      - /media/torrents/downloads:/downloads
+      - /media/torrents/movies:/Movies
     network_mode: service:gluetun
 
   overseerr:
@@ -117,7 +101,7 @@ services:
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Australia/Sydney
+      - TZ=Europe/Warsaw
     volumes:
       - /docker/overseerr/config:/config
     ports:
@@ -129,8 +113,8 @@ services:
     image: ghcr.io/ajnart/homarr:latest
     restart: unless-stopped
     volumes:
-      - ./homarr/configs:/app/data/configs
-      - ./homarr/icons:/app/public/icons
+      - /docker/homarr/configs:/app/data/configs
+      - /docker/homarr/icons:/app/public/icons
       - /var/run/docker.sock:/var/run/docker.sock:ro
     ports:
       - '7575:7575'
