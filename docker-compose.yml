@@ -11,8 +11,8 @@ services:
       - 6881:6881 # qbittorrent torrent port
       - 8989:8989 # sonarr
       - 7878:7878 # radarr
-      - 8686:8686 # lidarr
       - 9696:9696 # prowlarr
+      - 6767:6767 # bazarr
     volumes:
       - /docker/gluetun:/gluetun
     environment:
@@ -68,6 +68,10 @@ services:
       - /docker/prowlarr:/config
     restart: unless-stopped
     network_mode: service:gluetun
+    depends_on:
+      gluetun:
+        condition: "service_healthy"
+        restart: true
 
   sonarr:
     image: lscr.io/linuxserver/sonarr:latest
@@ -83,6 +87,10 @@ services:
       - /media/torrents/downloads:/downloads
       - /media/torrents/tv:/TV
     network_mode: service:gluetun
+    depends_on:
+      gluetun:
+        condition: "service_healthy"
+        restart: true
 
   radarr:
     image: lscr.io/linuxserver/radarr:latest
@@ -98,6 +106,28 @@ services:
       - /media/torrents/downloads:/downloads
       - /media/torrents/movies:/Movies
     network_mode: service:gluetun
+    depends_on:
+      gluetun:
+        condition: "service_healthy"
+        restart: true
+
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=3000
+      - PGID=3000
+      - TZ=Poland/Warsaw
+    volumes:
+      - /docker/bazarr/config:/config
+      - /media/torrents/movies:/Movies
+      - /media/torrents/tv:/TV
+    network_mode: service:gluetun
+    restart: unless-stopped
+    depends_on:
+      gluetun:
+        condition: "service_healthy"
+        restart: true
 
   homarr:
     container_name: homarr
