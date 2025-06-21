@@ -13,6 +13,7 @@ services:
       - 7878:7878 # radarr
       - 9696:9696 # prowlarr
       - 6767:6767 # bazarr
+      - 8191:8191 # flaresolverr
     volumes:
       - /docker/gluetun:/gluetun
     environment:
@@ -161,10 +162,8 @@ services:
       - LOG_HTML=${LOG_HTML:-false}
       - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
       - TZ=Poland/Warsaw
-      - FIREWALL_OUTBOUND_SUBNETS=192.168.1.0/24
-    ports:
-      - "${PORT:-8191}:8191"
     restart: unless-stopped
+    network_mode: service:gluetun
     depends_on:
       gluetun:
         condition: "service_healthy"
