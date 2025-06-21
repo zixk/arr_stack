@@ -161,6 +161,7 @@ services:
       - LOG_HTML=${LOG_HTML:-false}
       - CAPTCHA_SOLVER=${CAPTCHA_SOLVER:-none}
       - TZ=Poland/Warsaw
+      - FIREWALL_OUTBOUND_SUBNETS=192.168.1.0/24
     ports:
       - "${PORT:-8191}:8191"
     restart: unless-stopped
