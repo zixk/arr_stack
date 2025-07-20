@@ -48,7 +48,7 @@ services:
     network_mode: service:gluetun
     depends_on:
       gluetun:
-        condition: "service_healthy"
+        condition: "service_completed_successfully"
         restart: true
     healthcheck:
       test: ping -c 1 www.google.com || exit 1
@@ -71,7 +71,7 @@ services:
     network_mode: service:gluetun
     depends_on:
       gluetun:
-        condition: "service_healthy"
+        condition: "service_completed_successfully"
         restart: true
 
   sonarr:
@@ -90,7 +90,7 @@ services:
     network_mode: service:gluetun
     depends_on:
       gluetun:
-        condition: "service_healthy"
+        condition: "service_completed_successfully"
         restart: true
 
   radarr:
@@ -109,7 +109,7 @@ services:
     network_mode: service:gluetun
     depends_on:
       gluetun:
-        condition: "service_healthy"
+        condition: "service_completed_successfully"
         restart: true
 
   bazarr:
@@ -127,7 +127,7 @@ services:
     restart: unless-stopped
     depends_on:
       gluetun:
-        condition: "service_healthy"
+        condition: "service_completed_successfully"
         restart: true
 
   homarr:
@@ -166,5 +166,5 @@ services:
     network_mode: service:gluetun
     depends_on:
       gluetun:
-        condition: "service_healthy"
+        condition: "service_completed_successfully"
         restart: true
